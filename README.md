@@ -10,7 +10,9 @@ NOTE: this script was created for a single use case and may not function as inte
 
 Creates an ACM certificate for a given domain name, with optional subject alternative names, using DNS validation.
 
-Immediately creates the associated CNAME records for DNS validation in Route53. It will take a few minutes for the certificate to be validated and issued.
+Immediately creates the associated CNAME records for DNS validation in Route53. The script assumes that a Route 53 hosted zone tied to the domain exists (e.g. if you're creating a new certificate for www.test.com, the script will create validation records in the test.com hosted zone).
+
+It will take a few minutes for the certificate to be validated and issued.
 
 By default, this creates ACM certificates in `us-east-1`, so that the certificates can be used by Cloudfront. You can pass in a custom region (see Usage section below).
 
