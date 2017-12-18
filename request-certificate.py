@@ -53,7 +53,7 @@ args = configure_argument_parser()
 cert_client = DNSValidatedACMCertClient(args.domain, args.profile, args.region)
 arn = cert_client.request_certificate(args.domain,
                                       args.subject_alternative_names)
-print("Certificate created. ARN: ", arn)
+print("Certificate created. ARN: %s" % arn)
 
 # We must wait a few seconds until the metadata we need to perform DNS validation is ready
 print("Waiting for %s seconds for DNS validation records to be created..." %

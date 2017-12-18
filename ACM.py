@@ -1,5 +1,4 @@
 import boto3
-import json
 import tldextract
 import aws_helpers
 
@@ -105,9 +104,10 @@ class DNSValidatedACMCertClient():
             self.create_dns_record_set(record)
             for record in domain_validation_records
         ]
-        print("Resource change sets: %s" % json.dumps(
-            changes, indent=4, sort_keys=True))
-        self.route_53_client.change_resource_record_sets(
+        response = self.route_53_client.change_resource_record_sets(
             HostedZoneId=hosted_zone_id, ChangeBatch={
                 'Changes': changes,
             })
+
+        if aws_helpers.response_succeeded(response):
+            print("Successfully created Route 53 record set")
