@@ -39,3 +39,10 @@ You can also pass a custom AWS profile name, or region:
         --subject-alternative-names \
             <alternate name> \
             <another alternate name>
+
+## Credits
+
+I'm very grateful to the contributors of these libraries:
+
+* [`tldextract`](https://github.com/john-kurkowski/tldextract) helps parse the TLD and domain portions of hosts.
+* [`boto3`](https://github.com/boto/boto3) makes working with AWS API easy.
