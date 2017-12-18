@@ -53,11 +53,12 @@ args = configure_argument_parser()
 cert_client = DNSValidatedACMCertClient(args.domain, args.profile, args.region)
 arn = cert_client.request_certificate(args.domain,
                                       args.subject_alternative_names)
-print("ARN for certificate: ", arn)
+print("Certificate created. ARN: ", arn)
 
-# We must wait a few seconds until the metadata we need to
-# perform DNS validation is ready
-print("Waiting for %s seconds" % WAIT_TIME)
+# We must wait a few seconds until the metadata we need to perform DNS validation is ready
+print("Waiting for %s seconds for DNS validation records to be created..." %
+      WAIT_TIME)
 time.sleep(WAIT_TIME)
 
+# Create the DNS validation records in Route 53
 cert_client.create_domain_validation_records(arn)
