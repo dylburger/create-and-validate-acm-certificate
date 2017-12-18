@@ -16,6 +16,12 @@ By default, this creates ACM certificates in `us-east-1`, so that the certificat
 
 ## Usage
 
+First, you'll need to install the dependencies in `requirements.txt`:
+
+    pip install -r requirements.txt
+
+Then, run the `request-certificate.py` script:
+
     python request-certificate.py \
         --domain <domain> \
         --subject-alternative-names \
