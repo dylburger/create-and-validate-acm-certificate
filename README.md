@@ -8,7 +8,7 @@ NOTE: this script was created for a single use case and may not function as inte
 
 ## Overview
 
-Creates an ACM certificate for a given domain name, with optional subject alternative names, with DNS validation.
+Creates an ACM certificate for a given domain name, with optional subject alternative names, using DNS validation.
 
 Immediately creates the associated CNAME records for DNS validation in Route53. It will take a few minutes for the certificate to be validated and issued.
 
