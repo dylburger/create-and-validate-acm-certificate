@@ -14,7 +14,7 @@ def configure_argument_parser():
 
     parser = argparse.ArgumentParser()
 
-    # Help strings from ACM.CLient Boto 3 docs
+    # Help strings from ACM.Client Boto 3 docs
     parser.add_argument(
         '--profile',
         default=default_profile,
