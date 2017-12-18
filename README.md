@@ -12,7 +12,7 @@ Creates an ACM certificate for a given domain name, with optional subject altern
 
 Immediately creates the associated CNAME records for DNS validation in Route53. The script assumes that a Route 53 hosted zone tied to the domain exists (e.g. if you're creating a new certificate for www.test.com, the script will create validation records in the test.com hosted zone).
 
-It will take a few minutes for the certificate to be validated and issued.
+It will take a few minutes after you run the script for the certificate to be fully validated and issued.
 
 By default, this creates ACM certificates in `us-east-1`, so that the certificates can be used by Cloudfront. You can pass in a custom region (see Usage section below).
 
@@ -45,4 +45,4 @@ You can also pass a custom AWS profile name, or region:
 I'm very grateful to the contributors of these libraries:
 
 * [`tldextract`](https://github.com/john-kurkowski/tldextract) helps parse the TLD and domain portions of hosts.
-* [`boto3`](https://github.com/boto/boto3) makes working with AWS API easy.
+* [`boto3`](https://github.com/boto/boto3) makes working with the AWS API easy.
