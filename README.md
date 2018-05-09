@@ -26,7 +26,7 @@ Then, run the `request-certificate.py` script:
 
     python request-certificate.py \
         --domain <domain> \
-        --subject-alternative-names \
+        --subject_alternative_names \
             <alternate name> \
             <another alternate name>
 
@@ -36,7 +36,7 @@ You can also pass a custom AWS profile name, or region:
         --profile personal \
         --region us-east-1 \
         --domain <domain> \
-        --subject-alternative-names \
+        --subject_alternative_names \
             <alternate name> \
             <another alternate name>
 
