@@ -39,8 +39,8 @@ def configure_argument_parser():
 
     parser.add_argument(
         '--subject_alternative_names',
-        required=True,
         nargs='+',
+        default=[],
         help=
         'Additional FQDNs to be included in the Subject Alternative Name extension of the ACM Certificate',
     )
