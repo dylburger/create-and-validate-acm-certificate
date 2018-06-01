@@ -5,7 +5,7 @@ import aws_helpers
 
 class DNSValidatedACMCertClient():
 
-    def __init__(self, domain, profile, region):
+    def __init__(self, domain, profile='default', region='us-east-1'):
         self.session = boto3.Session(profile_name=profile, region_name=region)
         self.acm_client = self.session.client('acm')
         self.route_53_client = self.session.client('route53')
