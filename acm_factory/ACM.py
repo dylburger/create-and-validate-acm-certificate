@@ -1,6 +1,7 @@
 import boto3
 import tldextract
 import aws_helpers
+import time
 
 
 class DNSValidatedACMCertClient():
@@ -32,6 +33,21 @@ class DNSValidatedACMCertClient():
 
         if aws_helpers.response_succeeded(response):
             return self.get_certificate_arn(response)
+
+    def get_certificate_status(self, certificate_arn):
+        return self.acm_client.describe_certificate(CertificateArn=certificate_arn)['Certificate']['Status']
+
+    def wait_for_certificate_validation(self, certificate_arn, sleep_time=5, timeout=600):
+
+        status = self.get_certificate_status(certificate_arn)
+        elapsed_time = 0
+        while status == 'PENDING_VALIDATION':
+            if elapsed_time > timeout:
+                raise Exception('Timeout ({}s) reached for certificate validation'.format(timeout))
+            print("{}: Waiting {}s for validation, {}s elapsed...".format(certificate_arn, sleep_time, elapsed_time))
+            time.sleep(sleep_time)
+            status = self.get_certificate_status(certificate_arn)
+            elapsed_time += sleep_time
 
     def get_domain_validation_records(self, arn):
         """ Return the domain validation records from the describe_certificate
