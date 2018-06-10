@@ -1,6 +1,6 @@
 import argparse
 import time
-from ACM import DNSValidatedACMCertClient
+from acm_factory import DNSValidatedACMCertClient
 
 WAIT_TIME = 10
 

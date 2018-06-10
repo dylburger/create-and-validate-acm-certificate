@@ -18,6 +18,24 @@ By default, this creates ACM certificates in `us-east-1`, so that the certificat
 
 ## Usage
 
+### Python Module
+
+If you want to install as a python package, run:
+
+`pip install git+https://github.com/dylburger/create-and-validate-acm-certificate`
+
+Then, in your script:
+
+```
+from acm_factory import DNSValidatedACMCertClient
+
+cert_client = DNSValidatedACMCertClient(domain='www.domain.com') # defaults to using the 'default` aws profile on your machine and the 'us-east-1' aws region.
+arn = cert_client.request_certificate(domain='www.domain.com')
+cert_client.wait_for_certificate_validation(certificate_arn=arn, sleep_time=5, timeout=600) # will wait until the certificate is validated before continuing
+```
+
+### Command Line
+
 First, you'll need to install the dependencies in `requirements.txt`:
 
     pip install -r requirements.txt
