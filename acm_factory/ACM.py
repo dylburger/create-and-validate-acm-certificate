@@ -1,4 +1,5 @@
 import boto3
+from botocore.config import Config
 import tldextract
 import aws_helpers
 import time
@@ -9,7 +10,8 @@ class DNSValidatedACMCertClient():
     def __init__(self, domain, profile='default', region='us-east-1'):
         self.session = boto3.Session(profile_name=profile, region_name=region)
         self.acm_client = self.session.client('acm')
-        self.route_53_client = self.session.client('route53')
+        self.route_53_client = self.session.client('route53', config=Config(retries={
+            'max_attempts': 10}))
         self.domain = domain
 
     def get_certificate_arn(self, response):
@@ -76,8 +78,9 @@ class DNSValidatedACMCertClient():
 
         def get_zone_id_from_id_string(zone_id_string):
             return zone_id_string.split('/')[-1]
-
-        response = self.route_53_client.list_hosted_zones()
+        list_hosted_zones_paginator = self.route_53_client.get_paginator(
+            'list_hosted_zones')
+        response = list_hosted_zones_paginator.paginate().build_full_result()
         hosted_zone_domain = get_domain_from_host(self.domain)
         target_record = list(
             filter(
@@ -112,6 +115,11 @@ class DNSValidatedACMCertClient():
             }
         }
 
+    def remove_duplicate_upsert_records(self, original_list):
+        unique_list = []
+        [unique_list.append(obj) for obj in original_list if obj not in unique_list]
+        return unique_list
+
     def create_domain_validation_records(self, arn):
         """ Given an ACM certificate ARN,
             return the response
@@ -124,9 +132,10 @@ class DNSValidatedACMCertClient():
             self.create_dns_record_set(record)
             for record in domain_validation_records
         ]
+        unique_changes = self.remove_duplicate_upsert_records(changes)
         response = self.route_53_client.change_resource_record_sets(
             HostedZoneId=hosted_zone_id, ChangeBatch={
-                'Changes': changes,
+                'Changes': unique_changes,
             })
 
         if aws_helpers.response_succeeded(response):
