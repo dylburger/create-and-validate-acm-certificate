@@ -1,7 +1,7 @@
 import boto3
 from botocore.config import Config
 import tldextract
-import aws_helpers
+from . import aws_helpers
 import time
 
 
@@ -134,12 +134,15 @@ class DNSValidatedACMCertClient():
         ]
         unique_changes = self.remove_duplicate_upsert_records(changes)
         for change in unique_changes:
-            hosted_zone_id = self.get_hosted_zone_id(change['ResourceRecordSet']['Name'])
+            record_name = change.get('ResourceRecordSet').get('Name')
+            hosted_zone_id = self.get_hosted_zone_id(record_name)
             response = self.route_53_client.change_resource_record_sets(
             HostedZoneId=hosted_zone_id, 
             ChangeBatch={
                 'Changes': [change]
             })
 
-        if aws_helpers.response_succeeded(response):
-            print("Successfully created Route 53 record set")
+            if aws_helpers.response_succeeded(response):
+                print("Successfully created Route 53 record set for {}".format(record_name))
+            else:
+                print("Failed to create Route53 record set: {}".format(response))
