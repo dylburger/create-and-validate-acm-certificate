@@ -1,6 +1,6 @@
 import argparse
 import time
-from acm_factory import DNSValidatedACMCertClient
+from create_and_validate_acm_cert import DNSValidatedACMCertClient
 
 WAIT_TIME = 10
 
@@ -51,8 +51,7 @@ def configure_argument_parser():
 args = configure_argument_parser()
 
 cert_client = DNSValidatedACMCertClient(args.domain, args.profile, args.region)
-arn = cert_client.request_certificate(args.domain,
-                                      args.subject_alternative_names)
+arn = cert_client.request_certificate(args.subject_alternative_names)
 print("Certificate created. ARN: %s" % arn)
 
 # We must wait a few seconds until the metadata we need to perform DNS validation is ready

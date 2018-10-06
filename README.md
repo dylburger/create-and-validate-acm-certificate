@@ -27,10 +27,10 @@ If you want to install as a python package, run:
 Then, in your script:
 
 ```python
-from acm_factory import DNSValidatedACMCertClient
+from create_and_validate_acm_cert import DNSValidatedACMCertClient
 
 cert_client = DNSValidatedACMCertClient(domain='www.domain.com') # defaults to using the 'default` aws profile on your machine and the 'us-east-1' aws region.
-arn = cert_client.request_certificate(domain='www.domain.com')
+arn = cert_client.request_certificate()
 # Create DNS validation records
 cert_client.create_domain_validation_records(arn)
 # Wait for certificate to get to validation state before continuing
