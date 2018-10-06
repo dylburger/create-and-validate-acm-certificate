@@ -23,18 +23,18 @@ class DNSValidatedACMCertClient():
         """
         return response.get('CertificateArn')
 
-    def request_certificate(self, domain, subject_alternative_names=[]):
-        """ Given a domain name and a list of subject alternative names,
+    def request_certificate(self, subject_alternative_names=[]):
+        """ Given a list of (optional) subject alternative names,
             request a certificate and return the certificate ARN.
         """
         if len(subject_alternative_names) > 0:
             response = self.acm_client.request_certificate(
-                DomainName=domain,
+                DomainName=self.domain,
                 ValidationMethod='DNS',
                 SubjectAlternativeNames=subject_alternative_names)
         else:
             response = self.acm_client.request_certificate(
-                DomainName=domain, ValidationMethod='DNS')
+                DomainName=self.domain, ValidationMethod='DNS')
 
         if aws_helpers.response_succeeded(response):
             return self.get_certificate_arn(response)
