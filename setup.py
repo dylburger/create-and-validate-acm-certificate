@@ -1,25 +1,51 @@
-from setuptools import setup
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-setup(name='acm_factory',
-      version='0.1',
-      description='Creates and validates an AWS ACM certificate automatically.',
-      url='https://github.com/dylburger/create-and-validate-acm-certificate',
-      author='dylburger',
-      packages=['acm_factory'],
-      install_requires=[
-                'boto3==1.5.1',
-                'botocore==1.8.15',
-                'certifi==2017.11.5',
-                'chardet==3.0.4',
-                'docutils==0.14',
-                'idna==2.6',
-                'jmespath==0.9.3',
-                'python-dateutil==2.6.1',
-                'requests==2.18.4',
-                'requests-file==1.4.2',
-                's3transfer==0.1.12',
-                'six==1.11.0',
-                'tldextract==2.2.0',
-                'urllib3==1.22'
-      ],
-      zip_safe=False)
+import io
+import os
+import sys
+from setuptools import find_packages, setup
+
+NAME = 'create_and_validate_acm_cert'
+DESCRIPTION = 'Creates an ACM certificate with DNS validation, creates the validation records directly in Route 53'
+URL = 'https://github.com/dylburger/create-and-validate-acm-certificate'
+AUTHOR = 'dylburger'
+REQUIRES_PYTHON = '>=3.6.0'
+VERSION = None
+
+REQUIRED = [
+    'boto3',
+    'requests',
+    'tldextract',
+]
+
+here = os.path.abspath(os.path.dirname(__file__))
+
+# Import the README and use it as the long-description.
+try:
+    with io.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
+        long_description = '\n' + f.read()
+except FileNotFoundError:
+    long_description = DESCRIPTION
+
+about = {}
+if not VERSION:
+    with open(os.path.join(here, NAME, '__version__.py')) as f:
+        exec(f.read(), about)
+else:
+    about['__version__'] = VERSION
+
+setup(
+    name=NAME,
+    version=about['__version__'],
+    description=DESCRIPTION,
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+    author=AUTHOR,
+    python_requires=REQUIRES_PYTHON,
+    url=URL,
+    packages=find_packages(exclude=('tests',)),
+    install_requires=REQUIRED,
+    include_package_data=True,
+    license='MIT',
+)
