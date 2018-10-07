@@ -61,9 +61,15 @@ You can also pass a custom AWS profile name, or region:
             <alternate name> \
             <another alternate name>
 
+## Version History
+
+*1.0.0*
+
+* Breaking change to package name (renamed from `acm_factory` -> `create_and_validate_acm_cert`)
+
 ## Credits
 
-I'm very grateful to the contributors of these libraries:
+I'm very grateful to the [contributors to this tool](https://github.com/dylburger/create-and-validate-acm-certificate/graphs/contributors), and the contributors to these libraries:
 
 * [`tldextract`](https://github.com/john-kurkowski/tldextract) helps parse the TLD and domain portions of hosts.
 * [`boto3`](https://github.com/boto/boto3) makes working with the AWS API easy.
