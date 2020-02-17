@@ -7,10 +7,10 @@ import time
 
 class DNSValidatedACMCertClient():
 
-    def __init__(self, domain, profile='default', region='us-east-1', session=None):
+    def __init__(self, domain, profile='default', region='us-east-1', session=None, acm_client=None, route_53_client=None):
         self.session = session || boto3.Session(profile_name=profile, region_name=region)
-        self.acm_client = self.session.client('acm')
-        self.route_53_client = self.session.client('route53', config=Config(retries={
+        self.acm_client = acm_client || self.session.client('acm')
+        self.route_53_client = route_53_client || self.session.client('route53', config=Config(retries={
             'max_attempts': 10}))
         self.list_hosted_zones_paginator = self.route_53_client.get_paginator(
         'list_hosted_zones')
