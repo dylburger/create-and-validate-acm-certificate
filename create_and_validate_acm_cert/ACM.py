@@ -7,10 +7,10 @@ import time
 
 class DNSValidatedACMCertClient():
 
-    def __init__(self, domain, profile='default', region='us-east-1'):
-        self.session = boto3.Session(profile_name=profile, region_name=region)
-        self.acm_client = self.session.client('acm')
-        self.route_53_client = self.session.client('route53', config=Config(retries={
+    def __init__(self, domain, profile='default', region='us-east-1', session=None, acm_client=None, route_53_client=None):
+        self.session = session or boto3.Session(profile_name=profile, region_name=region)
+        self.acm_client = acm_client or self.session.client('acm')
+        self.route_53_client = route_53_client or self.session.client('route53', config=Config(retries={
             'max_attempts': 10}))
         self.list_hosted_zones_paginator = self.route_53_client.get_paginator(
         'list_hosted_zones')
@@ -137,7 +137,7 @@ class DNSValidatedACMCertClient():
             record_name = change.get('ResourceRecordSet').get('Name')
             hosted_zone_id = self.get_hosted_zone_id(record_name)
             response = self.route_53_client.change_resource_record_sets(
-            HostedZoneId=hosted_zone_id, 
+            HostedZoneId=hosted_zone_id,
             ChangeBatch={
                 'Changes': [change]
             })
